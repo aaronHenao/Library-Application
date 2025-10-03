@@ -4,20 +4,28 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthorsModule } from './authors/authors.module';
 import { BooksModule } from './books/books.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
-    TypeOrmModule.forRoot({ 
-    type: 'mysql', 
-    host: 'sql5.freesqldatabase.com',
-    port: 3306,
-    username: 'sql5800810',
-    password: 'PZP5bplHeV', 
-    database: 'sql5800810', 
-    entities: [__dirname + '/**/*.entity{.ts,.js}'], 
-    synchronize: true, // ¡SOLO PARA DESARROLLO! 
+    ConfigModule.forRoot({isGlobal:true}),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'], 
+        synchronize: true, // ¡SOLO PARA DESARROLLO! 
+      })
   }),
   AuthorsModule,
-  BooksModule],
+  BooksModule,
+  AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })
