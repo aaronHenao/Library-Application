@@ -1,15 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, ParseIntPipe, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, ParseIntPipe, Delete, UseGuards } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { UpdateAuthorNameDto } from './dto/update-author-name.dto';
 import { UpdateAuthorBirthDateDto } from './dto/update-author-birth-date.dto';
 import { LibraryApplicationBaseResponse } from 'src/common/dto/base-response.dto';
 import { AuthorResponseDto } from './dto/author-response.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('authors')
 export class AuthorsController {
     constructor(private readonly authorsService: AuthorsService){}
 
+    @UseGuards(AuthGuard('jwt'))
     @Get()
     async getAll(): Promise<LibraryApplicationBaseResponse<AuthorResponseDto[]>>{
         const authors = await this.authorsService.getAll();
