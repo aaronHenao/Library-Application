@@ -6,6 +6,7 @@ import { AuthorsModule } from './authors/authors.module';
 import { BooksModule } from './books/books.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './user/user/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal:true}),
@@ -25,7 +26,8 @@ import { AuthModule } from './auth/auth.module';
   }),
   AuthorsModule,
   BooksModule,
-  AuthModule],
+  AuthModule,
+  UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })
