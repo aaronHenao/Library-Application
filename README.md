@@ -1,8 +1,35 @@
-Proyecto biblioteca digital
+📚 Biblioteca Digital
+Este es el backend de una plataforma de gestión de libros, autores y usuarios para una biblioteca digital.
 
-Para ejecutar:
+Inicio Rápido
+Sigue estos pasos para tener el proyecto funcionando en tu entorno local.
 
-npm i
-npm build
+1. Requisitos
+Asegúrate de tener instalado:
 
-Crear un archivo .env en la raíz del proyecto para el manejo de la conexión a la base de datos y el JWT_SECRET
+Node.js (versión recomendada: 16 o superior)
+
+npm (incluido con Node.js)
+
+2. Instalación
+Clona el repositorio y ejecuta el comando de instalación para descargar todas las dependencias:
+
+# Instalar dependencias
+npm install
+
+3. Configuración del Entorno (.env)
+Para que el proyecto se conecte correctamente a la base de datos y maneje la autenticación, debes crear un archivo llamado .env en la raíz del proyecto.
+
+Este archivo debe contener las variables de entorno necesarias, como la cadena de conexión a la base de datos y la llave secreta para JWT (JSON Web Tokens)
+
+4. Compilación y Ejecución
+Una vez configurado el archivo .env, compila el código TypeScript a JavaScript y luego ejecuta la aplicación:
+
+# 1. Compilar el código (TypeScript a JavaScript)
+npm run build 
+
+# 2. Iniciar el servidor
+#  para desarrollo
+# npm run start:dev
+
+ El servidor estará disponible en el puerto configurado (ej. http://localhost:3000)
