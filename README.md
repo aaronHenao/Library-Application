@@ -1,7 +1,7 @@
-📚 Biblioteca Digital
+<em> #📚 Biblioteca Digital </em>
 Este es el backend de una plataforma de gestión de libros, autores y usuarios para una biblioteca digital.
 
-Inicio Rápido
+\## Inicio Rápido
 Sigue estos pasos para tener el proyecto funcionando en tu entorno local.
 
 1. Requisitos
