@@ -1,11 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookTitleDto } from './dto/update-book-title.dto';
-import { UpdateAvailableDto } from './dto/update-book-available.dto';
-import { UpdateBookAuthorIdDto } from './dto/update-book-author-id.dto';
 import { LibraryApplicationBaseResponse } from 'src/common/dto/base-response.dto';
 import { BookResponseDto } from './dto/book-response.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('books')
 export class BooksController {
@@ -42,32 +40,12 @@ export class BooksController {
 
     }
 
-    @Patch(':id/title')
-    async updateTitle(@Param('id') id:string, @Body() updateBookTitle: UpdateBookTitleDto): Promise<LibraryApplicationBaseResponse<BookResponseDto>>{
-        const book = await this.bookService.updateTitle(+id, updateBookTitle);
+    @Patch(':id')
+    async updateBook(@Param('id') id:string, @Body() updateBook: UpdateBookDto): Promise<LibraryApplicationBaseResponse<BookResponseDto>>{
+        const book = await this.bookService.updateBook(+id, updateBook);
         return{
             statusCode: 202, 
-            message: 'Nombre del libro actualizado correctamente',
-            data: book
-        }
-    }
-
-    @Patch(':id/available')
-    async updateAvailable(@Param('id') id:string, @Body() updateBookAvailable: UpdateAvailableDto): Promise<LibraryApplicationBaseResponse<BookResponseDto>>{
-        const book = await this.bookService.updateAvailable(+id, updateBookAvailable);
-        return{
-            statusCode: 202, 
-            message: 'Disponibilidad del libro actualizada correctamente',
-            data: book
-        }
-    }
-
-    @Patch(':id/author-id')
-    async updateAuthorId(@Param('id') id:string, @Body() updateBookAuthorId: UpdateBookAuthorIdDto): Promise<LibraryApplicationBaseResponse<BookResponseDto>>{
-        const book = await this.bookService.updateAuthorId(+id, updateBookAuthorId);
-        return{
-            statusCode: 202, 
-            message: 'Autor del libro actualizado correctamente',
+            message: 'Libro actualizado correctamente',
             data: book
         }
     }
@@ -77,7 +55,7 @@ export class BooksController {
         const book = await this.bookService.delete(+id)
         return{
             statusCode: 202, 
-            message:'Autor eliminado correctamente',
+            message:'Libro eliminado correctamente',
             data: book
         }
     }

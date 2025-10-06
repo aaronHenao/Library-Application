@@ -2,8 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Author } from './entities/author.entity';
 import { Repository } from 'typeorm';
-import { UpdateAuthorNameDto } from './dto/update-author-name.dto';
-import { UpdateAuthorBirthDateDto } from './dto/update-author-birth-date.dto';
+import { UpdateAuthorDto} from './dto/update-author.dto';
 import { AuthorResponseDto } from './dto/author-response.dto';
 
 
@@ -40,23 +39,15 @@ export class AuthorsService {
         return new AuthorResponseDto(savedAuthor)
     }
 
-    async updateName(id: number, updateAuthorName: UpdateAuthorNameDto): Promise<AuthorResponseDto> {
-        const author = await this.authorRepository.preload({id: id, ...updateAuthorName})
+    async updateAuthor(id: number, updatedAuthor: UpdateAuthorDto): Promise<AuthorResponseDto> {
+        const author = await this.authorRepository.preload({id: id, ...updatedAuthor})
         if (!author) {
             throw new NotFoundException(`Author con id ${id} no existe`);
         }
-        const updatedAuthor = await this.authorRepository.save(author);
-        return new AuthorResponseDto(updatedAuthor)
+        const authorUpdate = await this.authorRepository.save(author);
+        return new AuthorResponseDto(authorUpdate)
     }
 
-    async updateBirthDate(id: number, updateAuthorBirthDate: UpdateAuthorBirthDateDto): Promise<AuthorResponseDto> {
-        const author = await this.authorRepository.preload({id: id, ...updateAuthorBirthDate})
-        if (!author) {
-            throw new NotFoundException(`Author con id ${id} no existe`);
-        }
-        const updatedAuthor = await this.authorRepository.save(author);
-        return new AuthorResponseDto(updatedAuthor)
-    }
 
     async delete(id:number): Promise<AuthorResponseDto>{
         const author = await this.authorRepository.findOneBy({ id });

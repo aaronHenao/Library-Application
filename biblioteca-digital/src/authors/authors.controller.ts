@@ -1,11 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, ParseIntPipe, Delete, UseGuards } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
-import { UpdateAuthorNameDto } from './dto/update-author-name.dto';
-import { UpdateAuthorBirthDateDto } from './dto/update-author-birth-date.dto';
 import { LibraryApplicationBaseResponse } from 'src/common/dto/base-response.dto';
 import { AuthorResponseDto } from './dto/author-response.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateAuthorDto } from './dto/update-author.dto';
 
 @Controller('authors')
 export class AuthorsController {
@@ -42,9 +41,9 @@ export class AuthorsController {
         }
     }
 
-    @Patch(':id/name')
-    async updateName(@Param('id') id: string, @Body() updateAuthorName: UpdateAuthorNameDto): Promise<LibraryApplicationBaseResponse<AuthorResponseDto>>{
-        const author = await this.authorsService.updateName(+id, updateAuthorName);
+    @Patch(':id')
+    async updateName(@Param('id') id: string, @Body() updateAuthorName: UpdateAuthorDto): Promise<LibraryApplicationBaseResponse<AuthorResponseDto>>{
+        const author = await this.authorsService.updateAuthor(+id, updateAuthorName);
         return{
             statusCode: 202, 
             message: 'Nombre del autor actualizado correctamente',
@@ -52,16 +51,6 @@ export class AuthorsController {
         }
     }
     
-    @Patch(':id/birth-date')
-    async updateBirthDate(@Param('id') id: string, @Body() updateAuthorBirthDate: UpdateAuthorBirthDateDto): Promise<LibraryApplicationBaseResponse<AuthorResponseDto>>{
-        const author =  await this.authorsService.updateBirthDate(+id, updateAuthorBirthDate)
-        return{
-            statusCode: 202, 
-            message: 'Fecha de nacimiento del autor actualizada correctamente',
-            data: author
-        }
-    }
-
     @Delete(':id')
     async delete(@Param('id', ParseIntPipe) id: number): Promise<LibraryApplicationBaseResponse<AuthorResponseDto>>{
         const author = await this.authorsService.delete(id);

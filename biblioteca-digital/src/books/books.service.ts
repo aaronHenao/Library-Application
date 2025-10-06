@@ -4,10 +4,8 @@ import { Book } from "./entities/book.entity";
 import { Not, Repository } from "typeorm";
 import { Author } from "src/authors/entities/author.entity";
 import { CreateBookDto } from "./dto/create-book.dto";
-import { UpdateBookTitleDto } from "./dto/update-book-title.dto";
-import { UpdateAvailableDto } from "./dto/update-book-available.dto";
-import { UpdateBookAuthorIdDto} from "./dto/update-book-author-id.dto";
 import { BookResponseDto } from "./dto/book-response.dto";
+import { UpdateBookDto } from "./dto/update-book.dto";
 
 @Injectable()
 export class BooksService {
@@ -51,40 +49,11 @@ export class BooksService {
         return new BookResponseDto(newBook)
     }
 
-    async updateTitle(id:number, updateBookTitle: UpdateBookTitleDto): Promise<BookResponseDto>{
+    async updateBook(id:number, updateBookTitle: UpdateBookDto): Promise<BookResponseDto>{
         const book = await this.bookRepository.preload({id: id, ...updateBookTitle});
 
         if(!book){
             throw new NotFoundException(`Libro ID ${id} no encontrado`)
-        }
-        this.bookRepository.save(book);
-        return new BookResponseDto(book)
-    }
-
-    async updateAvailable(id:number, updateBookAvailable: UpdateAvailableDto): Promise<BookResponseDto>{
-        const book = await this.bookRepository.preload({id: id, ...updateBookAvailable});
-
-        if(!book){
-            throw new NotFoundException(`Libro ID ${id} no encontrado`)
-        }
-        this.bookRepository.save(book);
-        return new BookResponseDto(book)
-    }
-
-    async updateAuthorId(id:number, updateBookAuthorId: UpdateBookAuthorIdDto): Promise<BookResponseDto>{
-        const book = await this.bookRepository.preload({id: id, ...updateBookAuthorId});
-
-        if(!book){
-            throw new NotFoundException(`Libro ID ${id} no encontrado`)
-        }
-
-        if(updateBookAuthorId.authorId){
-            const author = await this.authorRepository.findOneBy({id: updateBookAuthorId.authorId});
-
-            if(!author){
-                throw new NotFoundException(`Autor con ID ${updateBookAuthorId.authorId} no encontrado`);
-            }
-            book.author = author;
         }
         this.bookRepository.save(book);
         return new BookResponseDto(book)
